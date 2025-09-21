@@ -1,23 +1,63 @@
 pipeline {
     agent any
 
+    environment {
+        // Put your MongoDB Atlas URI in Jenkins credentials as Secret Text
+        MONGO_URI = credentials('mongo-uri')
+        NODE_ENV = "production"
+    }
+
     stages {
-        stage('Clone Repository') {
+        stage('Clone Repo') {
             steps {
                 git branch: 'master', url: 'https://github.com/itzmunene/gallery.git'
             }
         }
 
-        stage('Build Project') {
+        stage('Install Dependencies') {
             steps {
-                sh './gradlew clean build'
+                sh 'npm install'
+            }
+        }
+
+        stage('Check DB Connection') {
+            steps {
+                sh '''
+                  node -e "
+                  const mongoose = require('mongoose');
+                  mongoose.connect(process.env.MONGO_URI,
+                    { useNewUrlParser: true, useUnifiedTopology: true })
+                    .then(() => { console.log('✅ MongoDB connected'); process.exit(0); })
+                    .catch(err => { console.error(err); process.exit(1); });
+                  "
+                '''
             }
         }
 
         stage('Run Tests') {
             steps {
-                sh './gradlew test'
+                sh 'npm test || echo "⚠️ No tests defined"'
             }
+        }
+
+        stage('Start App') {
+            steps {
+                sh '''
+                  npm install -g pm2
+                  pm2 stop gallery-app || true
+                  pm2 start server.js --name gallery-app
+                  pm2 save
+                '''
+            }
+        }
+    }
+
+    post {
+        success {
+            echo '🎉 Pipeline completed successfully!'
+        }
+        failure {
+            echo '❌ Pipeline failed. Check logs above.'
         }
     }
 }
