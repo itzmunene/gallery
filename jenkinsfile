@@ -1,39 +1,24 @@
 pipeline {
     agent any
 
-    environment {
-        NODE_ENV = "production"
-        MONGO_URI = credentials('mongo-uri-secret')  // Add in Jenkins → Credentials → Secret Text
-    }
-
     stages {
-        stage('Checkout') {
+        stage('Clone Repository') {
             steps {
-                git branch: 'main', url: 'https://github.com/itzmunene/gallery'
+                git branch: 'master', url: 'https://github.com/itzmunene/gallery.git'
             }
         }
 
-        stage('Install Dependencies') {
+        stage('Build Project') {
             steps {
-                sh 'npm install'
+                sh './gradlew clean build'
             }
         }
 
-        stage('Test DB Connection') {
+        stage('Run Tests') {
             steps {
-                sh 'node -e "require(\'mongoose\').connect(process.env.MONGO_URI).then(()=>console.log(\'✅ Mongo OK\')).catch(err=>console.error(\'❌\',err))"'
-            }
-        }
-
-        stage('Deploy') {
-            steps {
-                sh '''
-                npm install -g pm2
-                pm2 stop darkroom || true
-                pm2 start server.js --name darkroom
-                pm2 save
-                '''
+                sh './gradlew test'
             }
         }
     }
 }
+
