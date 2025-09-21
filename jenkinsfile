@@ -1,0 +1,17 @@
+const mongoose = require('mongoose');
+
+// MongoDB Atlas connection string (use env variable for security)
+const mongodb_url = process.env.MONGO_URI || 
+    "mongodb+srv://munene:Ofof%402025@projectcluster1.9ycirzi.mongodb.net/darkroom?retryWrites=true&w=majority";
+
+// Connect to MongoDB
+mongoose.connect(mongodb_url, { 
+    useNewUrlParser: true, 
+    useUnifiedTopology: true 
+}, (err) => {
+    if (err) {
+        console.error("❌ Mongo connection error:", err);
+    } else {
+        console.log("✅ Database connected successfully");
+    }
+});
