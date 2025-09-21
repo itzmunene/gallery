@@ -1,51 +1,38 @@
 pipeline {
     agent any
 
-    environment {
-        NODE_ENV = "production"
-        MONGO_URI_PROD = credentials('mongo-atlas-uri')
-    }
-
-    triggers {
-        githubPush()
-    }
-
     stages {
-        stage('Checkout Repo') {
+        stage("Clone Repository") {
             steps {
                 git branch: 'main', url: 'https://github.com/itzmunene/gallery.git'
             }
         }
 
-        stage('Install Dependencies') {
+        stage("Install Dependencies") {
             steps {
                 sh 'npm install'
             }
         }
 
-        stage('Build') {
+        stage("Build Project") {
             steps {
-                sh 'npm run build || echo "No build script found"'
+                echo "Build step not required for Node.js static site, just dependencies installed."
             }
         }
 
-        stage('Deploy to Render') {
+        stage("Deploy to Render") {
             steps {
-                sh '''
-                  echo "Deploying app..."
-                  export MONGO_URI_PROD=$MONGO_URI_PROD
-                  node server.js &
-                '''
+                echo "Deployment handled by Render auto-deploy on push."
             }
         }
     }
 
     post {
         success {
-            echo 'Pipeline finished successfully!'
+            echo "✅ Pipeline finished successfully"
         }
         failure {
-            echo 'Pipeline failed. Check logs.'
+            echo "❌ Pipeline failed. Check logs."
         }
     }
 }
