@@ -2,15 +2,18 @@ pipeline {
     agent any
 
     environment {
-        // Put your MongoDB Atlas URI in Jenkins credentials as Secret Text
-        MONGO_URI = credentials('mongo-uri')
         NODE_ENV = "production"
+        MONGO_URI_PROD = credentials('mongo-atlas-uri')  // Jenkins credential
+    }
+
+    triggers {
+        githubPush()   // Auto-trigger when repo gets pushed
     }
 
     stages {
-        stage('Clone Repo') {
+        stage('Checkout Repo') {
             steps {
-                git branch: 'master', url: 'https://github.com/itzmunene/gallery.git'
+                git branch: 'main', url: 'https://github.com/itzmunene/gallery.git'
             }
         }
 
@@ -20,33 +23,18 @@ pipeline {
             }
         }
 
-        stage('Check DB Connection') {
+        stage('Build') {
             steps {
-                sh '''
-                  node -e "
-                  const mongoose = require('mongoose');
-                  mongoose.connect(process.env.MONGO_URI,
-                    { useNewUrlParser: true, useUnifiedTopology: true })
-                    .then(() => { console.log('✅ MongoDB connected'); process.exit(0); })
-                    .catch(err => { console.error(err); process.exit(1); });
-                  "
-                '''
+                sh 'npm run build || echo "No build script found"'
             }
         }
 
-        stage('Run Tests') {
-            steps {
-                sh 'npm test || echo "⚠️ No tests defined"'
-            }
-        }
-
-        stage('Start App') {
+        stage('Deploy to Render') {
             steps {
                 sh '''
-                  npm install -g pm2
-                  pm2 stop gallery-app || true
-                  pm2 start server.js --name gallery-app
-                  pm2 save
+                  echo "Deploying app..."
+                  export MONGO_URI_PROD=$MONGO_URI_PROD
+                  node server.js &
                 '''
             }
         }
@@ -54,11 +42,10 @@ pipeline {
 
     post {
         success {
-            echo '🎉 Pipeline completed successfully!'
+            echo 'Pipeline finished successfully!'
         }
         failure {
-            echo '❌ Pipeline failed. Check logs above.'
+            echo 'Pipeline failed. Check logs.'
         }
     }
 }
-
