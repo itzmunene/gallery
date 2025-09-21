@@ -14,6 +14,7 @@ mongoose.connect(`${mongodb_url}${dbName}`,{ useNewUrlParser: true , useUnifiedT
     if (err) console.log(err)
 });
 
+// Jenkins credential
 // test if the database has connected successfully
 let db = mongoose.connection;
 db.once('open', ()=>{

@@ -3,11 +3,11 @@ pipeline {
 
     environment {
         NODE_ENV = "production"
-        MONGO_URI_PROD = credentials('mongo-atlas-uri')  // Jenkins credential
+        MONGO_URI_PROD = credentials('mongo-atlas-uri')
     }
 
     triggers {
-        githubPush()   // Auto-trigger when repo gets pushed
+        githubPush()
     }
 
     stages {
