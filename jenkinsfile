@@ -34,5 +34,14 @@ pipeline {
                 sh 'npm start & sleep 5'
             }
         }
+        stage('Install Dependencies') {
+    steps {
+        sh 'node -v'
+        sh 'npm -v'
+        sh 'cat package.json'
+        sh 'npm install --legacy-peer-deps'
+    }
+}
+
     }
 }
