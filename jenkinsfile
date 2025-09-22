@@ -1,6 +1,10 @@
 pipeline {
     agent any
 
+    tools {
+        nodejs "NodeJS_24.8.0"  
+    }
+
     environment {
         MONGO_URI = "mongodb://localhost:27017/gallery"
         NODE_ENV = "production"
@@ -21,17 +25,13 @@ pipeline {
 
         stage("Test") {
             steps {
-                sh 'npm test || true'
+                sh 'npm test || echo "⚠️ Tests failed, continuing..."'
             }
         }
 
         stage("Run App") {
             steps {
-                sh '''
-                  export MONGO_URI=$MONGO_URI
-                  npm start &
-                  sleep 5
-                '''
+                sh 'npm start & sleep 5'
             }
         }
     }
