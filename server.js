@@ -12,7 +12,6 @@ let image = require('./routes/image');
 console.log('ENV:', env);
 console.log('Config:', config);
 const env = process.env.NODE_ENV || 'development';
-const config = require('./_config');
 const mongodb_url = config.mongoURI[env];
 
 // Connect to MongoDB
