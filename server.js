@@ -2,14 +2,11 @@ const express = require('express');
 const mongoose = require('mongoose');
 const path = require('path');
 const config = require('./_config');
-const config = require('./_config');
 
 // Define routes
 let index = require('./routes/index');
 let image = require('./routes/image');
 
-// Initializing the app
-const app = express();
 
 // Pick environment (default: development)
 const env = process.env.NODE_ENV || 'development';
