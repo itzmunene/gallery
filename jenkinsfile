@@ -2,7 +2,6 @@ pipeline {
     agent any
 
     environment {
-        # Just define variables here directly
         MONGO_URI = "mongodb://localhost:27017/gallery"
         NODE_ENV = "production"
     }
@@ -20,37 +19,20 @@ pipeline {
             }
         }
 
-        stage("Build") {
-            steps {
-                echo "Skipping build step for now (Node.js static site)."
-            }
-        }
-
         stage("Test") {
             steps {
-                sh 'npm test || echo "⚠️ Tests failed or not configured, continuing..."'
+                sh 'npm test || true'
             }
         }
 
         stage("Run App") {
             steps {
                 sh '''
-                  echo "🚀 Starting app with local Mongo..."
                   export MONGO_URI=$MONGO_URI
                   npm start &
                   sleep 5
-                  echo "App started"
                 '''
             }
-        }
-    }
-
-    post {
-        success {
-            echo "✅ Pipeline finished successfully"
-        }
-        failure {
-            echo "❌ Pipeline failed. Check logs."
         }
     }
 }
