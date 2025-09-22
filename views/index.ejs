@@ -29,36 +29,7 @@
   </div>
     
     <div class="container">
-        <h1>Image Upload </h1>
-        <%= typeof msg != 'undefined' ? msg : '' %>
-        <form action="/upload" method = "POST" enctype="multipart/form-data">
-            <div class="file-field input-field">
-              <div class="btn grey">
-                <span>Image</span>
-                <input name = "image" type="file">
-              </div>
-              <div class="file-path-wrapper">
-                <input class="file-path validate" type="text">
-              </div>
-            </div>
-            <button type="submit" class="btn">Submit</button>
-        </form>
-        <hr>
-        <br>
-        
-          <div class="row">
-            <% images.forEach(function(image){ %>
-
-              <div class="column">
-
-                <a href="/image/<%= image._id %>"> <img src="<%= image.path %>" class="responsive-img" alt="<%= image.name %>"> </a>
-              </div>
-            <% }); %>  
-          </div>
-
-          <! -- Milestone 2 -- >
-
-          <h1 style="color: red; font-size: 4rem; text-align: center; margin-top: 30px;">
+    <h1 style="color: red; font-size: 4rem; text-align: center; margin-top: 30px;">
         🚀 MILESTONE 2 🚀
     </h1>
 
