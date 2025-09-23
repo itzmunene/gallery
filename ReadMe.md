@@ -52,6 +52,6 @@ Deployment is automated via Jenkins pipeline.
 On successful build, application is deployed to Render at:
 🔗 [Live Render App](https://gallery-j9wd.onrender.com/)
 
-![Alt Text][pipeline.png]
+![alt text](public/images/pipeline.png)
 
-![Alt Text][website render.png]
+![alt text](<public/images/website render.png>)
