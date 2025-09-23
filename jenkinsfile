@@ -1,50 +1,33 @@
 pipeline {
     agent any
 
-    tools {
-        nodejs "NodeJS"
-    }
-
     stages {
-        stage('Checkout') {
+        stage('Build') {
             steps {
-                git url: 'https://github.com/itzmunene/gallery.git', branch: 'master'
+                sh 'npm install'
             }
         }
-
-        stage('Install Dependencies') {
-            steps {
-                sh '''
-                  rm -rf node_modules package-lock.json
-                  npm install --legacy-peer-deps
-                '''
-            }
-        }
-
         stage('Test') {
             steps {
-                sh 'npm test || echo "⚠ Tests failed or not configured, continuing..."'
+                sh 'npm test'
             }
         }
-
-        stage('Run App') {
+        stage('Deploy') {
             steps {
-                sh 'node server.js & sleep 5'
+                sh 'node server.js'
             }
         }
-        
-        post 
-        {
+    }
+
+    post {
         success {
-            slackSend(channel: '#jenkins-builds', 
+            slackSend(channel: '#jenkins-builds',
                       message: "✅ Build #${env.BUILD_NUMBER} succeeded! View: ${env.BUILD_URL}")
         }
         failure {
-            slackSend(channel: '#jenkins-builds', 
+            slackSend(channel: '#jenkins-builds',
                       message: "❌ Build #${env.BUILD_NUMBER} failed! View: ${env.BUILD_URL}")
         }
-        }
-
-
     }
 }
+
