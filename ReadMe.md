@@ -11,7 +11,7 @@ Configured MongoDB Atlas cluster and created a database user.
 
 Updated _config.js with the Atlas URI (mongodb+srv://...) replacing <USERNAME> and <PASSWORD>.
 
-Confirmed successful connection from server.js to Atlas.
+Confirmed successful connection from server.js to Atlas. Needs to be secured with secret files to keep credentials off _config.js file.
 
 Milestone 2: Basic Pipeline
 
@@ -35,21 +35,15 @@ Updated the landing page to display both “MILESTONE 2” and “MILESTONE 3”
 
 Milestone 4: Slack Integration
 
-Created Slack channel: <YourName>_IP1.
+Created Slack channel. Ran into an issue with the Slack integration with the pipeline, needs more debbuging, for future use, so I reverted the Slack integration in the pipeline.
 
-Configured Jenkins Slack plugin with a Slack Webhook.
-
-Updated pipeline so successful builds send a Slack message containing:
-
-Jenkins build ID
-
-Render deployment link (via env variable)
+Render deployment link 
 
 Updated the landing page to display “MILESTONE 2”, “MILESTONE 3”, and “MILESTONE 4”.
 
 Recent Fixes
 
-MongoDB Authentication Issue: Updated Atlas URI to properly encode the password (@ → %40).
+MongoDB Authentication Issue: Updated Atlas URI to properly encode the password (@ → %40). Also needs securing carrying over credentials without encryption is a liability of the app.
 
 Config Debugging: Ensured process.env.NODE_ENV is set correctly on Render, and added logging in server.js to confirm the right URI is loaded.
 
@@ -58,5 +52,6 @@ Deployment is automated via Jenkins pipeline.
 On successful build, application is deployed to Render at:
 🔗 [Live Render App](https://gallery-j9wd.onrender.com/)
 
-Slack channel.
-🔗 [Join Slack Channel](https://join.slack.com/share/enQtOTU5MDI0MTUwNDAwMC04N2IzMzdkNzIyZDdjOTdmMDdmOTUwMGY5NWQ2YWQ3YmE3YzM2ZDE2MzA2ZDgzYjk0MDIyMGM4ZDA2ODgzZjYy?entry_point=default_oauth)
+![Alt Text][pipeline.png]
+
+![Alt Text][website render.png]
