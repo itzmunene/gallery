@@ -2,43 +2,35 @@ pipeline {
     agent any
 
     tools {
-        nodejs "NodeJS"  
-    }
-
-    environment {
-        MONGO_URI = "mongodb://localhost:27017/gallery"
-        NODE_ENV = "production"
+        nodejs "NodeJS"
     }
 
     stages {
-        stage("Checkout") {
+        stage('Checkout') {
             steps {
-                git branch: 'master', url: 'https://github.com/itzmunene/gallery.git'
+                git url: 'https://github.com/itzmunene/gallery.git', branch: 'master'
             }
         }
 
-        stage("Install Dependencies") {
+        stage('Install Dependencies') {
             steps {
-                sh 'npm install'
-                sh 'node -v'
-                sh 'npm -v'
-                sh 'cat package.json'
-                sh 'npm install --legacy-peer-deps'
+                sh '''
+                  rm -rf node_modules package-lock.json
+                  npm install --legacy-peer-deps
+                '''
             }
         }
 
-        stage("Test") {
+        stage('Test') {
             steps {
-                sh 'npm test || echo "⚠️ Tests failed, continuing..."'
+                sh 'npm test || echo "⚠ Tests failed or not configured, continuing..."'
             }
         }
 
-        stage("Run App") {
+        stage('Run App') {
             steps {
-                sh 'npm start & sleep 5'
+                sh 'node server.js & sleep 5'
             }
         }
-}
-
     }
 }
