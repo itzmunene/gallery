@@ -32,5 +32,19 @@ pipeline {
                 sh 'node server.js & sleep 5'
             }
         }
+        
+        post 
+        {
+        success {
+            slackSend(channel: '#jenkins-builds', 
+                      message: "✅ Build #${env.BUILD_NUMBER} succeeded! View: ${env.BUILD_URL}")
+        }
+        failure {
+            slackSend(channel: '#jenkins-builds', 
+                      message: "❌ Build #${env.BUILD_NUMBER} failed! View: ${env.BUILD_URL}")
+        }
+        }
+
+
     }
 }
