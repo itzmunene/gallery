@@ -33,15 +33,4 @@ pipeline {
             }
         }
     }
-
-    post {
-        success {
-            slackSend(channel: '#jenkins-builds',
-                      message: "✅ SUCCESS: Build #${env.BUILD_NUMBER} for *${env.JOB_NAME}* succeeded.\n🔗 ${env.BUILD_URL}\n🌍 Render: https://gallery-j9wd.onrender.com/")
-        }
-        failure {
-            slackSend(channel: '#jenkins-builds',
-                      message: "❌ FAILURE: Build #${env.BUILD_NUMBER} for *${env.JOB_NAME}* failed.\n🔗 ${env.BUILD_URL}")
-        }
-    }
 }
