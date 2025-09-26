@@ -5,6 +5,11 @@ pipeline {
         nodejs "NodeJS"
     }
 
+    environment {
+        // Add your Render link here, or set it in Jenkins job config
+        RENDER_URL = "https://gallery-j9wd.onrender.com/"
+    }
+
     stages {
         stage('Checkout') {
             steps {
@@ -31,6 +36,25 @@ pipeline {
             steps {
                 sh 'node server.js & sleep 5'
             }
+        }
+    }
+
+    post {
+        success {
+            slackSend(
+                tokenCredentialId: 'slack-bot-token',
+                channel: '#YourName_IP1',
+                color: 'good',
+                message: "✅ Build *${env.JOB_NAME} #${env.BUILD_NUMBER}* succeeded.\nJenkins: ${env.BUILD_URL}\nRender: ${env.RENDER_URL}"
+            )
+        }
+        failure {
+            slackSend(
+                tokenCredentialId: 'slack-bot-token',
+                channel: '#YourName_IP1',
+                color: 'danger',
+                message: "❌ Build *${env.JOB_NAME} #${env.BUILD_NUMBER}* failed.\nCheck Jenkins: ${env.BUILD_URL}"
+            )
         }
     }
 }
