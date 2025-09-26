@@ -42,7 +42,7 @@ pipeline {
     post {
         success {
             slackSend(
-                tokenCredentialId: 'slack-bot-token',
+                tokenCredentialId: 'slackbot',
                 channel: '#gallery-task-tracker',
                 color: 'good',
                 message: "✅ Build *${env.JOB_NAME} #${env.BUILD_NUMBER}* succeeded.\nJenkins: ${env.BUILD_URL}\nRender: ${env.RENDER_URL}"
@@ -50,7 +50,7 @@ pipeline {
         }
         failure {
             slackSend(
-                tokenCredentialId: 'slack-bot-token',
+                tokenCredentialId: 'slackbot',
                 channel: '#gallery-task-tracker',
                 color: 'danger',
                 message: "❌ Build *${env.JOB_NAME} #${env.BUILD_NUMBER}* failed.\nCheck Jenkins: ${env.BUILD_URL}"
