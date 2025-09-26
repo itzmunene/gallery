@@ -5,8 +5,12 @@ pipeline {
         nodejs "NodeJS"
     }
 
+     triggers {
+        githubPush()
+    }
+
+
     environment {
-        // Add your Render link here, or set it in Jenkins job config
         RENDER_URL = "https://gallery-j9wd.onrender.com/"
     }
 
