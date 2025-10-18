@@ -35,9 +35,8 @@ It supports cloud deployment pipelines, testing, and CI/CD integrations with **J
 
 ## 💬 Milestone 4: Slack Integration
 - Created a Slack channel.  
-- Attempted Jenkins → Slack integration.  
-- ⚠ Still debugging: reverted Slack stage in pipeline for now.  
-- Future goal: Notifications with build ID + Render link.  
+- Jenkins → Slack integration.  
+- Notifications with build ID + Render link.  
 
 ![alt text](<public/images/slack oversight.png>)
 
