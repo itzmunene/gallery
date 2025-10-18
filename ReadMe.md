@@ -9,9 +9,7 @@ It supports cloud deployment pipelines, testing, and CI/CD integrations with **J
 ## 🚀 Milestone 1: Set Up
 - Forked and cloned the starter repo.  
 - Configured **MongoDB Atlas cluster** and created a database user.  
-- Updated `_config.js` with the Atlas URI (`mongodb+srv://...`) replacing `<USERNAME>` and `<PASSWORD>`.
-- Confirmed successful connection from `server.js` to Atlas.  
-- 🔒 *Next step:* Secure credentials using environment variables or secret files (avoid committing to `_config.js`).  
+ 
 
 ---
 
@@ -46,6 +44,22 @@ It supports cloud deployment pipelines, testing, and CI/CD integrations with **J
 - **Deployment** → automated via Jenkins pipeline.  
 
 ---
+## Update 1
+## 🔐 MongoDB Configuration & Security
+
+To keep the MongoDB credentials safe and out of the public repo, I moved all sensitive connection strings into a **secret environment variable** instead of hardcoding them into the `_config.js` file.
+
+Originally, the `_config.js` contained direct connection URLs for development, production, and test environments. These have now been replaced with a **hidden variable** that Render manages securely.
+
+### ⚙️ How It Works
+
+- The app checks for a value in `process.env.MONGO_URI_PRODUCTION`.  
+  If it’s set (for example, when deployed on Render), it connects using that URI.  
+- If no environment variable is found, it falls back to the values defined in `_config.js` for local testing and development.  
+
+  ```js
+  const mongoURI = process.env.MONGO_URI_PRODUCTION || config.mongoURI[env];
+
 
 ## 🌍 Deployment
 ✅ On successful build, app is deployed to **Render**:

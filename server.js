@@ -15,10 +15,7 @@ console.log('Config:', config);
 const mongodb_url = config.mongoURI[env];
 
 // Mongoose setup & Render environment-specific MongoDB URI for credentials
-const mongoose = require('mongoose');
-const mongoURI = process.env.MONGO_URI_PRODUCTION;
-mongoose.connect(mongoURI);
-
+const mongoURI = process.env.MONGO_URI_PRODUCTION || config.mongoURI[env];
 
 // Connect to MongoDB
 mongoose.connect(mongodb_url, {
