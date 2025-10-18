@@ -12,8 +12,8 @@ let image = require('./routes/image');
 const env = process.env.NODE_ENV || 'development';
 console.log('ENV:', env);
 console.log('Config:', config);
-const mongodb_url = config.mongoURI[env];
-
+const mongodb_url = process.env.MONGO_URI;
+ 
 // Mongoose setup & Render environment-specific MongoDB URI for credentials
 const mongoURI = process.env.MONGO_URI_PRODUCTION || config.mongoURI[env];
 
