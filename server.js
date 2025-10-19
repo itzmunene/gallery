@@ -7,15 +7,13 @@ const config = require('./_config');
 let index = require('./routes/index');
 let image = require('./routes/image');
 
-
 // Pick environment (default: development)
 const env = process.env.NODE_ENV || 'development';
 console.log('ENV:', env);
 console.log('Config:', config);
-const mongodb_url = process.env.MONGO_URI;
  
-// Mongoose setup & Render environment-specific MongoDB URI for credentials
-const mongoURI = process.env.MONGO_URI_PRODUCTION || config.mongoURI[env];
+// Use Render environment variable
+const mongoURI = process.env.MONGO_URI_PRODUCTION || config.mongoURI;
 
 // Connect to MongoDB
 mongoose.connect(mongodb_url, {
