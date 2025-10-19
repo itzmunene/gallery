@@ -1,4 +1,4 @@
-
-const mongoURI = process.env.MONGO_URI_PRODUCTION;
-
-
+// _config.js
+module.exports = {
+  mongoURI: process.env.MONGO_URI_PRODUCTION
+};
