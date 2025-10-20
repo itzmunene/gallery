@@ -16,7 +16,7 @@ console.log('Config:', config);
 const mongoURI = process.env.MONGO_URI_PRODUCTION || config.mongoURI;
 
 // Connect to MongoDB
-mongoose.connect(mongodbURI, {
+mongoose.connect(mongoURI, {
     useNewUrlParser: true,
     useUnifiedTopology: true
 }, (err) => {
